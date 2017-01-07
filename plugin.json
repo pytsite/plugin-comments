@@ -1,0 +1,17 @@
+{
+  "description": {
+    "en": "Comments API",
+    "ru": "Comments API",
+    "uk": "Comments API"
+  },
+  "url": "https://github.com/pytsite/plugin-comments",
+  "author": {
+    "name": "Alexander Shepetko",
+    "email": "a@shepetko.com",
+    "url": "https://shepetko.com"
+  },
+  "requires": {
+    "packages": [],
+    "plugins": []
+  }
+}
