@@ -16,14 +16,18 @@ def _init():
     """Init wrapper.
     """
     from pytsite import events, lang, tpl, http_api, permissions
-    from . import _eh
+    from . import _eh, _http_api
 
     events.listen('pytsite.update', _eh.update)
     permissions.define_group('comments', 'pytsite.comments@comments')
 
     lang.register_package(__name__)
     tpl.register_package(__name__)
-    http_api.register_handler('comments', __name__ + '.http_api')
+    http_api.handle('GET', 'comments-settings', _http_api.get_settings, 'comments@get_settings')
+    http_api.handle('GET', 'comments/<path:thread_uid>', _http_api.get_comments, 'comments@get_comments')
+    http_api.handle('POST', 'comment', _http_api.post_comment, 'comments@post_comment')
+    http_api.handle('POST', 'comment/report', _http_api.post_report, 'comments@post_report')
+    http_api.handle('DELETE', 'comment/<path:uid>', _http_api.delete_comment, 'comments@delete_comment')
 
 
 _init()
