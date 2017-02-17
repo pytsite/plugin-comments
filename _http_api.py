@@ -20,12 +20,16 @@ def get_settings(inp: dict) -> dict:
     }
 
 
-def post_comment(inp: dict, thread_uid: str) -> dict:
+def post_comment(inp: dict) -> dict:
     """Create new comment.
     """
+    thread_uid = inp.get('thread_uid')
+    if not thread_uid:
+        raise RuntimeError('Thread UID is not specified')
+
     body = inp.get('body', '').strip()
     if not body:
-        raise RuntimeError(_lang.t('pytsite.comments@comment_body_cannot_be_empty'))
+        raise RuntimeError(_lang.t('comments@comment_body_cannot_be_empty'))
 
     status = 'published'
     parent_uid = inp.get('parent_uid')
@@ -34,9 +38,13 @@ def post_comment(inp: dict, thread_uid: str) -> dict:
     return comment.as_jsonable()
 
 
-def get_comments(inp: dict, thread_uid: str) -> dict:
+def get_comments(inp: dict) -> dict:
     """Get comments.
     """
+    thread_uid = inp.get('thread_uid')
+    if not thread_uid:
+        raise RuntimeError('Thread UID is not specified')
+
     limit = abs(int(inp.get('limit', 0)))
     skip = abs(int(inp.get('skip', 0)))
     comments = list(_api.get_driver().get_comments(thread_uid, limit, skip))
@@ -52,6 +60,7 @@ def delete_comment(inp: dict, uid: str) -> dict:
     try:
         _api.get_driver().delete_comment(uid)
         return {'status': True}
+
     except _error.CommentNotExist as e:
         raise _http.error.NotFound(str(e))
 
@@ -59,6 +68,6 @@ def delete_comment(inp: dict, uid: str) -> dict:
 def post_report(inp: dict, uid: str) -> dict:
     """Report about comment.
     """
-    _events.fire('pytsite.comments.report_comment', uid=uid)
+    _events.fire('comments.report', uid=uid)
 
     return {'status': True}

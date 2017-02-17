@@ -16,7 +16,13 @@ class Abstract(_ABC):
 
     @_abstractmethod
     def get_name(self) -> str:
-        """Get driver name.
+        """Get driver's name.
+        """
+        pass
+
+    @_abstractmethod
+    def get_description(self) -> str:
+        """Get driver's description.
         """
         pass
 

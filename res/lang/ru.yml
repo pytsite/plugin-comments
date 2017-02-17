@@ -1,4 +1,5 @@
 comments: 'Комментарии'
+driver: 'Драйвер'
 comment_body_cannot_be_empty: 'Комментарий не может быть пустым.'
 error_body_too_long: 'Комментарий слишком длинный.'
 error_body_too_short: 'Комментарий слишком короткий.'
