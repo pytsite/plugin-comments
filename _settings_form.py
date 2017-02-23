@@ -30,8 +30,8 @@ class Form(_settings.Form):
             h_size='col-xs-12 col-sm-3 col-md-2 col-lg-1',
             append_none_item=False,
             required=True,
-            items=[(str(x), str(x)) for x in range(1, 11)],
-            default=_api.get_comment_max_depth(),
+            items=[(str(x), str(x)) for x in range(0, 11)],
+            default=4,
         ))
 
         self.add_widget(_widget.input.Integer(
@@ -39,7 +39,7 @@ class Form(_settings.Form):
             weight=30,
             label=_lang.t('comments@min_comment_length'),
             h_size='col-xs-12 col-sm-3 col-md-2 col-lg-1',
-            default=_api.get_comment_body_min_length(),
+            default=2,
             required=True,
         ))
 
@@ -48,7 +48,7 @@ class Form(_settings.Form):
             weight=40,
             label=_lang.t('comments@max_comment_length'),
             h_size='col-xs-12 col-sm-3 col-md-2 col-lg-1',
-            default=_api.get_comment_body_max_length(),
+            default=2048,
             required=True,
         ))
 

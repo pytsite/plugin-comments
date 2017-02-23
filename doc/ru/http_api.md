@@ -1,17 +1,9 @@
 # PytSite Comments HTTP API
 
-Перед изучением этого документа убедитесь, что разобрались с [PytSite HTTP API](../../../http_api/doc/ru/index.md).
-
 
 ## GET comments/settings
 
-Получение параметров конфигурации комментариев.
-
-
-### Аргументы
-
-- *optional* **str** `access_token`. [Токен доступа](../../../auth/doc/ru/http_api.md#post-pytsiteauthsign_in).
-- *optional* **str** `driver`. Дравйер.
+Получение параметров конфигурации API комментариев.
 
 
 ### Формат ответа
@@ -32,8 +24,8 @@
 
 ```
 curl -X GET \
--d language=ru \
--d access_token=227912317f4439e6b5ba496f183947f8 \
+-H 'PytSite-Auth: 227912317f4439e6b5ba496f183947f8' \
+-H 'PytSite-Lang: ru' \
 http://test.com/api/1/comments/settings
 ```
 
@@ -60,12 +52,11 @@ http://test.com/api/1/comments/settings
 
 ## POST comments/comment
 
-Добавление нового комментария.
+Добавление нового комментария. Обязательна [аутентификация](https://github.com/pytsite/pytsite/blob/devel/pytsite/http_api/doc/ru/index.md#%D0%90%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2).
 
 
 ### Аргументы
 
-- *required* **str** `access_token`. [Токен доступа](../../../auth/doc/ru/http_api.md#post-pytsiteauthsign_in).
 - *required* **str** `thread_uid`. Уникальный идентификатор ветки комментариев. Как правило, это путь страницы, на 
   которой будет отображаться данная ветка, без учёта суффикса локализации. Абсолютный URL использовать не рекомендуется, 
   поскольку это усложнит перенос сайта на другой домен.
@@ -74,7 +65,7 @@ http://test.com/api/1/comments/settings
   *после* очистки текста от лишних пробелов и HTML.
 - *optional* **str** `parent_uid`. UID родительского комментария. При использовании этого параметра необходимо следить,
   чтобы не было превышения максимально-допустимой вложенности, которая по умолчанию составляет 4.
-- *optional* **str** `driver`. Дравйер.
+- *optional* **str** `driver`. Имя драйвера.
 
 
 ### Формат ответа
@@ -109,7 +100,8 @@ http://test.com/api/1/comments/settings
 
 ```
 curl -X POST \
--d access_token=227912317f4439e6b5ba496f183947f8 \
+-H 'PytSite-Auth: 227912317f4439e6b5ba496f183947f8' \
+-H 'PytSite-Lang: ru' \
 -d thread_uid=/hello/world \
 -d parent_uid=57b0b315523af525a269a02a \
 -d body='Привет, Мир!' \
@@ -148,15 +140,47 @@ http://test.com/api/1/comments/comment
 ```
 
 
-## GET comments/comments
+## GET comment/:uid
 
-Получение списка комментариев.
+Получение комментария.
 
 
 ### Аргументы
 
+- `uid`. Уникальный идентификатор комментария.
+
+
+### Параметры
+
+- *optional* **str** `driver`. Дравйер.
+
+
+### Формат ответа
+
+Объект. Набор полей полностью идентичен ответу метода **POST comments/comment**.
+
+
+### Прмеры
+
+Запрос:
+
+```
+curl -X GET \
+-H 'PytSite-Auth: 227912317f4439e6b5ba496f183947f8' \
+-H 'PytSite-Lang: ru' \
+http://test.com/api/1/comments/comment/57b25223523af558d54f33ad
+```
+
+
+
+## GET comments
+
+Получение списка комментариев.
+
+
+### Параметры
+
 - *required* **str** `thread_uid`. Уникальный идентификатор ветки комментариев.
-- *optional* **str** `access_token`. [Токен доступа](../../../auth/doc/ru/http_api.md#post-pytsiteauthsign_in).
 - *optional* **str** `driver`. Дравйер.
 
 
@@ -167,8 +191,6 @@ http://test.com/api/1/comments/comment
 - **array[object]** `items`. Информация о комментариях. Структура какждого элемента полностью совпадает со структурой 
   ответа метода `POST comments/comment` за исключением того, что если комментарий имеет статус, отличный от `published`,
   то поля `body` и `author` будут отсутствовать.
-- **object** `settings`. Параметры конфигурации комментариев. В точности совпадают с форматом ответа 
-  `GET comments/settings`.  
 
 ### Примеры
 
@@ -176,10 +198,10 @@ http://test.com/api/1/comments/comment
 
 ```
 curl -X GET \
--d language=ru,
--d access_token=227912317f4439e6b5ba496f183947f8 \
--d thread_uid=/hello/world \
-http://test.com/api/1/comments/comments
+-H 'PytSite-Auth: 227912317f4439e6b5ba496f183947f8' \
+-H 'PytSite-Lang: ru' \
+-d thread_uid='/hello/world' \
+http://test.com/api/1/comments
 ```
 
 
@@ -188,59 +210,24 @@ http://test.com/api/1/comments/comments
 ```
 {
     "items": [
-        {
-            "uid": "57b25223523af558d54f33ad", 
-            "parent_uid": "57b0b315523af525a269a02a", 
-            "thread_uid": "/hello/world",
-            "status": "published",
-            "depth": 2,
-            "body": "Привет, Мир!",
-            "publish_time": {
-                "w3c": "2016-08-16T02:37:07+0300",
-                "pretty_date": "16 августа",
-                "pretty_date_time": "16 августа, 02:37",
-                "ago": "15 минут"
-            }, 
-            "author": {
-                "uid": "579178ed523af5473134aed6",
-                "nickname": "pupkeen", 
-                "full_name": "Василий Пупкин",
-                "picture_url": "http://test.com/image/resize/50/50/15/b5/8c319860b6a92a69.png", 
-                "profile_url": "http://test.com/auth/profile/pupkeen"
-            }, 
-            "permissions": {
-                "modify": true, 
-                "delete": true
-            }
-        }
-    ],
-    "settings": {
-        "body_min_length": 2, 
-        "body_max_length": 2048,
-        "max_depth": 4,
-        "statuses": {
-            "published": "Опубликован",
-            "waiting": "На модерации",
-            "spam": "Спам",
-            "deleted": "Удалён"
-        },
-        "permissions": {
-            "create": true
-        }
-    }
+        ...
+    ]
 }
 ```
 
 
-## DELETE comments/comment
+## DELETE comments/comment/:uid
 
-Смена статуса комментария на `deleted`.
+Удаление комментария. Обязательна [аутентификация](https://github.com/pytsite/pytsite/blob/devel/pytsite/http_api/doc/ru/index.md#%D0%90%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2).
 
 
 ### Аргументы
 
-- *required* **str** `access_token`. [Токен доступа](../../../auth/doc/ru/http_api.md#post-pytsiteauthsign_in).
-- *required* **str** `uid`. Уникальный идентификатор комментария.
+- `uid`. Уникальный идентификатор комментария.
+
+
+### Параметры
+
 - *optional* **str** `driver`. Дравйер.
 
 
@@ -248,7 +235,7 @@ http://test.com/api/1/comments/comments
 
 Объект.
 
-- **bool** `status`. Флаг успешности обработки запроса.
+- **bool** `status`. Результат обработки запроса.
 
 
 ### Примеры
@@ -257,9 +244,8 @@ http://test.com/api/1/comments/comments
 
 ```
 curl -X DELETE \
--d access_token=227912317f4439e6b5ba496f183947f8 \
--d uid=57b25223523af558d54f33ad \
-http://test.com/api/1/comments/comment
+-H 'PytSite-Auth: 227912317f4439e6b5ba496f183947f8' \
+http://test.com/api/1/comments/comment/57b25223523af558d54f33ad
 ```
 
 
@@ -272,22 +258,21 @@ http://test.com/api/1/comments/comment
 ```
 
 
-## POST comments/report
+## POST comments/report/:uid
 
 Отправка жалобы на комментарий.
 
 
 ### Аргументы
 
-- *required* **str** `access_token`. [Токен доступа](../../../auth/doc/ru/http_api.md#post-pytsiteauthsign_in).
-- *required* **str** `uid`. Уникальный идентификатор комментария.
+- `uid`. Уникальный идентификатор комментария.
 
 
 ### Формат ответа
 
 Объект.
 
-- **bool** `status`. Флаг успешности обработки запроса.
+- **bool** `status`. Результат обработки запроса.
 
 
 ### Примеры
@@ -296,9 +281,8 @@ http://test.com/api/1/comments/comment
 
 ```
 curl -X POST \
--d access_token=227912317f4439e6b5ba496f183947f8 \
--d uid=57b25223523af558d54f33ad \
-http://test.com/api/1/comments/report
+-H 'PytSite-Auth: 227912317f4439e6b5ba496f183947f8' \
+http://test.com/api/1/comments/report/57b25223523af558d54f33ad
 ```
 
 

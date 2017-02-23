@@ -1,4 +1,4 @@
-"""PytSite Comments API.
+"""PytSite Comments API
 """
 from typing import Dict as _Dict, Iterable as _Iterable
 from frozendict import frozendict as _frozendict
@@ -10,13 +10,13 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-_last_registered_driver_name = None  # type: str
+_default_driver = None  # type: _driver.Abstract
 _drivers = {}  # type: _Dict[str, _driver.Abstract]
 _comments_count = _cache.create_pool('comments.count')
 
 
 def register_driver(driver: _driver.Abstract):
-    """Registers a comments driver.
+    """Register a comments driver
     """
     global _drivers
 
@@ -30,11 +30,35 @@ def register_driver(driver: _driver.Abstract):
 
     _drivers[driver_name] = driver
 
-    global _last_registered_driver_name
-    _last_registered_driver_name = driver_name
+    # Set default driver if it is not already set
+    global _default_driver
+    if not _default_driver:
+        _default_driver = driver
 
 
-def get_drivers() -> _frozendict:
+def get_driver(name: str = None) -> _driver.Abstract:
+    """Get driver instance.
+    """
+    if not _default_driver:
+        raise _error.NoDriversRegistered('There is no comment drivers registered')
+
+    if not name:
+        return _drivers.get(_settings.get('comments.driver', ''), _default_driver)
+    elif name not in _drivers:
+        raise _error.DriverNotRegistered("Driver '{}' is not registered".format(name))
+
+    return _drivers[name]
+
+
+def set_default_driver(name: str):
+    """Set default driver.
+    """
+    global _default_driver
+
+    _default_driver = get_driver(name)
+
+
+def get_drivers() -> _Dict[str, _driver.Abstract]:
     """Get all registered drivers.
     """
     return _frozendict(_drivers)
@@ -67,23 +91,6 @@ def get_comment_body_max_length() -> int:
     """Get comment's body maximum length.
     """
     return int(_settings.get('comments.max_comment_length', 2048))
-
-
-def get_driver(driver_name: str = None) -> _driver.Abstract:
-    """Get driver instance.
-    """
-    if not _last_registered_driver_name:
-        raise _error.NoDriversRegistered('There is no comment drivers registered')
-
-    if not driver_name:
-        driver_name = _settings.get('comments.driver')
-        if driver_name not in _drivers:
-            driver_name = _last_registered_driver_name
-
-    if driver_name not in _drivers:
-        raise _error.DriverNotRegistered("Driver '{}' is not registered".format(driver_name))
-
-    return _drivers[driver_name]
 
 
 def get_widget(widget_uid: str = 'comments', thread_id: str = None, driver_name: str = None) -> _widget.Abstract:

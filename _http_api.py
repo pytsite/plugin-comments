@@ -16,7 +16,7 @@ def get_settings(inp: dict) -> dict:
         'body_max_length': _api.get_comment_body_max_length(),
         'max_depth': _api.get_comment_max_depth(),
         'statuses': _api.get_comment_statuses(),
-        'permissions': _api.get_permissions(_auth.get_current_user()),
+        'permissions': _api.get_permissions(_auth.get_current_user(), inp.get('driver')),
     }
 
 
@@ -33,9 +33,15 @@ def post_comment(inp: dict) -> dict:
 
     status = 'published'
     parent_uid = inp.get('parent_uid')
-    comment = _api.create_comment(thread_uid, body, _auth.get_current_user(), status, parent_uid)
+    comment = _api.create_comment(thread_uid, body, _auth.get_current_user(), status, parent_uid, inp.get('driver'))
 
     return comment.as_jsonable()
+
+
+def get_comment(inp: dict, uid: str) -> dict:
+    """Get single comment.
+    """
+    return _api.get_comment(uid, inp.get('driver')).as_jsonable()
 
 
 def get_comments(inp: dict) -> dict:
