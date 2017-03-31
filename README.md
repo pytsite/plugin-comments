@@ -2,6 +2,11 @@
 
 ## Changelog
 
+
+### 0.3.1 (2017-03-31)
+Fixed translations.
+
+
 ### 0.3 (2017-02-23)
 - Added new API function: `set_default_driver()`.
 - Added new HTTP API endpoint: **GET comments/comment/:uid**
