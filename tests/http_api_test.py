@@ -1,6 +1,6 @@
 """
 """
-from pytsite import unittest, http_api, auth, util
+from pytsite import testing, http_api, auth, util
 from plugins import comments
 
 __author__ = 'Alexander Shepetko'

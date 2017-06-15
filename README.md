@@ -1,6 +1,11 @@
 # PytSite Comments API Plugin
 
+
 ## Changelog
+
+
+### 0.3.2 (2017-06-15)
+Updated to support latest PytSite version 0.99.39.
 
 
 ### 0.3.1 (2017-03-31)

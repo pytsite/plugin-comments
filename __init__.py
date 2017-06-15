@@ -16,7 +16,7 @@ def _init():
     """Init wrapper.
     """
     from pytsite import lang, tpl, http_api, permissions, settings
-    from . import _http_api, _settings_form
+    from . import _http_api_controllers, _settings_form
 
     # Resources
     lang.register_package(__name__, alias='comments')
@@ -31,12 +31,12 @@ def _init():
                     'comments.settings.manage')
 
     # HTTP API
-    http_api.handle('GET', 'comments/settings', _http_api.get_settings, 'comments@get_settings')
-    http_api.handle('POST', 'comments/comment', _http_api.post_comment, 'comments@post_comment')
-    http_api.handle('GET', 'comment/comment/<uid>', _http_api.get_comment, 'comments@get_comment')
-    http_api.handle('GET', 'comments', _http_api.get_comments, 'comments@get_comments')
-    http_api.handle('POST', 'comments/report/<uid>', _http_api.post_report, 'comments@post_comment_report')
-    http_api.handle('DELETE', 'comments/comment/<uid>', _http_api.delete_comment, 'comments@delete_comment')
+    http_api.handle('GET', 'comments/settings', _http_api_controllers.GetSettings(), 'comments@get_settings')
+    http_api.handle('POST', 'comments/comment', _http_api_controllers.PostComment(), 'comments@post_comment')
+    http_api.handle('GET', 'comment/comment/<uid>', _http_api_controllers.GetComment(), 'comments@get_comment')
+    http_api.handle('GET', 'comments', _http_api_controllers.GetComments(), 'comments@get_comments')
+    http_api.handle('POST', 'comments/report/<uid>', _http_api_controllers.PostReport(), 'comments@post_comment_report')
+    http_api.handle('DELETE', 'comments/comment/<uid>', _http_api_controllers.DeleteComment(), 'comments@delete_comment')
 
 
 _init()
