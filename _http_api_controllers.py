@@ -1,6 +1,7 @@
-"""PytSite Comments HTTP API.
+"""PytSite Comments Plugin HTTP API
 """
-from pytsite import auth as _auth, lang as _lang, routing as _routing, events as _events
+from pytsite import lang as _lang, routing as _routing, events as _events
+from plugins import auth as _auth
 from . import _api, _error
 
 __author__ = 'Alexander Shepetko'

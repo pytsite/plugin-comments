@@ -1,7 +1,8 @@
-"""Comments Models.
+"""PytSite Comments Plugin Models
 """
 from datetime import datetime as _datetime
-from pytsite import auth as _auth, util as _util, lang as _lang
+from pytsite import util as _util, lang as _lang
+from plugins import auth as _auth
 
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'

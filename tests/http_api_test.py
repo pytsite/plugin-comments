@@ -1,18 +1,18 @@
 """
 """
-from pytsite import testing, http_api, auth, util
-from plugins import comments
+from pytsite import testing, http_api, util
+from plugins import auth, comments
 
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 
-class HttpApiTest(unittest.TestCase):
+class HttpApiTest(testing.TestCase):
     def setUp(self):
         user_role = auth.get_role('user')
-        user_role.add_permission('pytsite.odm_auth.create.comment')
-        user_role.add_permission('pytsite.odm_auth.modify.comment')
+        user_role.add_permission('odm_auth.create.comment')
+        user_role.add_permission('odm_auth.modify.comment')
         user_role.save()
 
         self.create_url = http_api.url('comments@post_comment')

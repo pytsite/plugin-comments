@@ -1,8 +1,8 @@
-"""PytSite Comments Abstract Driver.
+"""PytSite Comments Plugin Abstract Driver
 """
 from typing import Iterable as _Iterable
 from abc import ABC as _ABC, abstractmethod as _abstractmethod
-from pytsite import widget as _widget, auth as _auth
+from plugins import widget as _widget, auth as _auth
 from . import _model
 
 __author__ = 'Alexander Shepetko'

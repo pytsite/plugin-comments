@@ -1,9 +1,10 @@
-"""PytSite Comments API
+"""PytSite Comments Plugin API Functions
 """
 from typing import Dict as _Dict, Iterable as _Iterable
 from frozendict import frozendict as _frozendict
-from pytsite import router as _router, widget as _widget, auth as _auth, reg as _reg, lang as _lang, cache as _cache, \
-    mail as _mail, tpl as _tpl, events as _events, settings as _settings
+from pytsite import router as _router, reg as _reg, lang as _lang, cache as _cache, mail as _mail, tpl as _tpl, \
+    events as _events
+from plugins import widget as _widget, auth as _auth, settings as _settings
 from . import _driver, _error, _model
 
 __author__ = 'Alexander Shepetko'

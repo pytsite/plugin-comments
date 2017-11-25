@@ -1,4 +1,4 @@
-"""PytSite Comments Package Init.
+"""PytSite Comments Plugin
 """
 # Public API
 from . import _driver as driver, _error as error, _model as model
@@ -15,12 +15,13 @@ __license__ = 'MIT'
 def _init():
     """Init wrapper.
     """
-    from pytsite import lang, tpl, http_api, permissions, settings
+    from pytsite import lang, tpl
+    from plugins import permissions, settings, http_api
     from . import _http_api_controllers, _settings_form
 
     # Resources
-    lang.register_package(__name__, alias='comments')
-    tpl.register_package(__name__, alias='comments')
+    lang.register_package(__name__)
+    tpl.register_package(__name__)
 
     # Permissions
     permissions.define_group('comments', 'comments@comments')
