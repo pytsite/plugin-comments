@@ -83,7 +83,6 @@ http://test.com/api/1/comments/settings
     - **str** `nickname`. Никнейм.
     - **str** `full_name`. Имя и фамилия.
     - **str** `picture_url`. URL изображения.
-    - **str** `profile_url`. URL профиля.
 - **object** `publish_time`. Дата и время публикации.
     - **str** `w3c`. В формате W3C (https://www.w3.org/TR/NOTE-datetime).
     - **str** `pretty_date`. Дата в "человеческом" формате, например "4 сентября".
@@ -130,8 +129,7 @@ http://test.com/api/1/comments/comment
         "nickname": "pupkeen", 
         "full_name": "Василий Пупкин",
         "picture_url": "http://test.com/image/resize/50/50/15/b5/8c319860b6a92a69.png", 
-        "profile_url": "http://test.com/auth/profile/pupkeen"
-    }, 
+    },
     "permissions": {
         "modify": true, 
         "delete": true

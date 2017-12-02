@@ -4,7 +4,7 @@ from typing import Dict as _Dict, Iterable as _Iterable
 from frozendict import frozendict as _frozendict
 from pytsite import router as _router, reg as _reg, lang as _lang, cache as _cache, mail as _mail, tpl as _tpl, \
     events as _events
-from plugins import widget as _widget, auth as _auth, settings as _settings
+from plugins import widget as _widget, auth as _auth
 from . import _driver, _error, _model
 
 __author__ = 'Alexander Shepetko'
@@ -44,7 +44,7 @@ def get_driver(name: str = None) -> _driver.Abstract:
         raise _error.NoDriversRegistered('There is no comment drivers registered')
 
     if not name:
-        return _drivers.get(_settings.get('comments.driver', ''), _default_driver)
+        return _drivers.get(_reg.get('comments.driver', ''), _default_driver)
     elif name not in _drivers:
         raise _error.DriverNotRegistered("Driver '{}' is not registered".format(name))
 
@@ -79,19 +79,19 @@ def get_comment_statuses() -> dict:
 def get_comment_max_depth() -> int:
     """Get comment's max depth.
     """
-    return int(_settings.get('comments.max_comment_depth', 4))
+    return int(_reg.get('comments.max_comment_depth', 4))
 
 
 def get_comment_body_min_length() -> int:
     """Get comment's body minimum length.
     """
-    return int(_settings.get('comments.min_comment_length', 2))
+    return int(_reg.get('comments.min_comment_length', 2))
 
 
 def get_comment_body_max_length() -> int:
     """Get comment's body maximum length.
     """
-    return int(_settings.get('comments.max_comment_length', 2048))
+    return int(_reg.get('comments.max_comment_length', 2048))
 
 
 def get_widget(widget_uid: str = 'comments', thread_id: str = None, driver_name: str = None) -> _widget.Abstract:

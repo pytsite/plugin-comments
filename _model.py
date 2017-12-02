@@ -83,7 +83,6 @@ class AbstractComment:
                     'nickname': author.nickname,
                     'full_name': author.full_name,
                     'picture_url': author.picture.get_url(width=50, height=50),
-                    'profile_url': author.profile_view_url if author.profile_is_public else None,
                 },
             })
 
