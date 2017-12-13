@@ -121,10 +121,10 @@ def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, 
 
     # Create comment
     comment = driver.create_comment(thread_id, body, author, status, parent_uid)
-    _events.fire('comments.create_comment', comment=comment)
+    _events.fire('comments@create_comment', comment=comment)
 
     # Send email notification about REPLY
-    if _reg.get('comments.email.notify', True) and comment.is_reply:
+    if _reg.get('comments.email_notify', True) and comment.is_reply:
         parent_comment = get_comment(comment.parent_uid)
         if comment.author != parent_comment.author:
             tpl_name = 'comments@mail/{}/reply'.format(_lang.get_current())

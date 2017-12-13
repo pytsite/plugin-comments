@@ -90,6 +90,6 @@ class PostReport(_routing.Controller):
     """
 
     def exec(self) -> dict:
-        _events.fire('comments.report', uid=self.arg('uid'))
+        _events.fire('comments@report', uid=self.arg('uid'))
 
         return {'status': True}
