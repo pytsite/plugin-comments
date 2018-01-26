@@ -1,12 +1,12 @@
 """PytSite Comments Plugin HTTP API
 """
-from pytsite import lang as _lang, routing as _routing, events as _events
-from plugins import auth as _auth
-from . import _api, _error
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from pytsite import lang as _lang, routing as _routing, events as _events
+from plugins import auth as _auth
+from . import _api, _error
 
 
 class GetSettings(_routing.Controller):

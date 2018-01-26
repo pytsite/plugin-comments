@@ -1,13 +1,13 @@
 """PytSite Comments Plugin Abstract Driver
 """
+__author__ = 'Alexander Shepetko'
+__email__ = 'a@shepetko.com'
+__license__ = 'MIT'
+
 from typing import Iterable as _Iterable
 from abc import ABC as _ABC, abstractmethod as _abstractmethod
 from plugins import widget as _widget, auth as _auth
 from . import _model
-
-__author__ = 'Alexander Shepetko'
-__email__ = 'a@shepetko.com'
-__license__ = 'MIT'
 
 
 class Abstract(_ABC):

@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 1.3 (2018-01-26)
+
+Support for `auth-1.3` and `settings-1.3`.
+
+
 ### 1.2 (2017-12-13)
 
 Support for PytSite-7.0.

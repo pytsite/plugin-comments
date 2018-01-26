@@ -11,8 +11,8 @@ __license__ = 'MIT'
 class HttpApiTest(testing.TestCase):
     def setUp(self):
         user_role = auth.get_role('user')
-        user_role.add_permission('odm_auth.create.comment')
-        user_role.add_permission('odm_auth.modify.comment')
+        user_role.add_permission('odm_auth@create.comment')
+        user_role.add_permission('odm_auth@modify.comment')
         user_role.save()
 
         self.create_url = http_api.url('comments@post_comment')

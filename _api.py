@@ -1,15 +1,15 @@
 """PytSite Comments Plugin API Functions
 """
+__author__ = 'Alexander Shepetko'
+__email__ = 'a@shepetko.com'
+__license__ = 'MIT'
+
 from typing import Dict as _Dict, Iterable as _Iterable
 from frozendict import frozendict as _frozendict
 from pytsite import router as _router, reg as _reg, lang as _lang, cache as _cache, mail as _mail, tpl as _tpl, \
     events as _events
 from plugins import widget as _widget, auth as _auth
 from . import _driver, _error, _model
-
-__author__ = 'Alexander Shepetko'
-__email__ = 'a@shepetko.com'
-__license__ = 'MIT'
 
 _default_driver = None  # type: _driver.Abstract
 _drivers = {}  # type: _Dict[str, _driver.Abstract]

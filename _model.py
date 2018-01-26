@@ -1,12 +1,12 @@
 """PytSite Comments Plugin Models
 """
-from datetime import datetime as _datetime
-from pytsite import util as _util, lang as _lang
-from plugins import auth as _auth
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from datetime import datetime as _datetime
+from pytsite import util as _util, lang as _lang
+from plugins import auth as _auth
 
 
 class AbstractComment:

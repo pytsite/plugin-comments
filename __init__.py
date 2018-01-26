@@ -28,11 +28,9 @@ def plugin_load_uwsgi():
 
     # Permissions
     permissions.define_group('comments', 'comments@comments')
-    permissions.define_permission('comments.settings.manage', 'comments@manage_comments_settings', 'app')
 
     # Settings
-    settings.define('comments', _settings_form.Form, 'comments@comments', 'fa fa-comments',
-                    'comments.settings.manage')
+    settings.define('comments', _settings_form.Form, 'comments@comments', 'fa fa-comments', 'dev')
 
     # HTTP API
     http_api.handle('GET', 'comments/settings', _http_api_controllers.GetSettings, 'comments@get_settings')
