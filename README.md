@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 1.3.1 (2018-02-21)
+
+Error message on the settings form fixed.
+
+
 ### 1.3 (2018-01-26)
 
 Support for `auth-1.8` and `settings-1.3`.

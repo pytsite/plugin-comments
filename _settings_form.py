@@ -11,8 +11,16 @@ from . import _api
 
 class Form(_settings.Form):
     def _on_setup_widgets(self):
-        """Hook.
+        """Hook
         """
+        if not _api.get_drivers():
+            self.remove_widget('action-submit')
+            self.add_widget(_widget.static.Text(
+                uid='error_message',
+                title=_lang.t('comments@no_comments_driver_installed'),
+            ))
+            return
+
         self.add_widget(_widget.select.Select(
             uid='setting_driver',
             weight=10,

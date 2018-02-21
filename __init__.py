@@ -4,14 +4,11 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import plugman as _plugman
-
-if _plugman.is_installed(__name__):
-    # Public API
-    from . import _driver as driver, _error as error, _model as model
-    from ._api import register_driver, get_driver, get_widget, get_comments_count, get_all_comments_count, \
-        get_drivers, create_comment, get_comment_statuses, get_comment_max_depth, get_comment_body_min_length, \
-        get_comment, get_comment_body_max_length, get_comments, get_permissions, delete_thread, set_default_driver
+# Public API
+from . import _driver as driver, _error as error, _model as model
+from ._api import register_driver, get_driver, get_widget, get_comments_count, get_all_comments_count, \
+    get_drivers, create_comment, get_comment_statuses, get_comment_max_depth, get_comment_body_min_length, \
+    get_comment, get_comment_body_max_length, get_comments, get_permissions, delete_thread, set_default_driver
 
 
 def plugin_load():
@@ -22,7 +19,7 @@ def plugin_load():
     tpl.register_package(__name__)
 
 
-def plugin_load_uwsgi():
+def plugin_load_wsgi():
     from plugins import permissions, settings, http_api
     from . import _http_api_controllers, _settings_form
 
