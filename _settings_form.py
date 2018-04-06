@@ -14,7 +14,7 @@ class Form(_settings.Form):
         """Hook
         """
         if not _api.get_drivers():
-            self.remove_widget('action-submit')
+            self.remove_widget('action_submit')
             self.add_widget(_widget.static.Text(
                 uid='error_message',
                 title=_lang.t('comments@no_comments_driver_installed'),

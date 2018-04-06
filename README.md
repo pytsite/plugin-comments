@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 1.4 (2018-04-06)
+
+Support of `form-2.3`.
+
+
 ### 1.3.1 (2018-02-21)
 
 Error message on the settings form fixed.
