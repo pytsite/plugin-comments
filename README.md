@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 1.5 (2018-06-01)
+
+Support of `pytsite-7.24`.
+
+
 ### 1.4 (2018-04-06)
 
 Support of `form-2.3`.
@@ -21,17 +26,17 @@ Support for `auth-1.8` and `settings-1.3`.
 
 ### 1.2 (2017-12-13)
 
-Support for PytSite-7.0.
+Support of `pytsite-7.0`.
 
 
 ### 1.1 (2017-12-02)
 
-Support for PytSite-6.1.
+Support of `pytsite-6.1`.
 
 
 ### 1.0 (2017-11-25)
 
-Support for PytSite-6.0.
+Support of `pytsite-6.0`.
 
 
 ### 0.3.3 (2017-08-27)
@@ -41,7 +46,7 @@ Support for PytSite-6.0.
 
 ### 0.3.2 (2017-06-15)
 
-Updated to support latest PytSite version 0.99.39.
+Support of `pytsite-0.99.39`.
 
 
 ### 0.3.1 (2017-03-31)

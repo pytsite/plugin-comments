@@ -97,7 +97,7 @@ def get_comment_body_max_length() -> int:
 def get_widget(widget_uid: str = 'comments', thread_id: str = None, driver_name: str = None) -> _widget.Abstract:
     """Get comments widget.
     """
-    return get_driver(driver_name).get_widget(widget_uid, thread_id or _router.current_path(True))
+    return get_driver(driver_name).get_widget(widget_uid, thread_id or _router.current_path())
 
 
 def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, status: str = 'published',
