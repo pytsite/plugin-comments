@@ -1,6 +1,6 @@
 {
   "name": "comments",
-  "version": "1.5",
+  "version": "1.6",
   "description": {
     "en": "Comments",
     "ru": "Комментирование",
@@ -15,7 +15,7 @@
   "requires": {
     "pytsite": ">=7.24",
     "plugins": [
-      "auth>=1.8",
+      "auth>=3.5",
       "form>=2.3",
       "http_api",
       "permissions",

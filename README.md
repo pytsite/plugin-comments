@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 1.6 (2018-07-29)
+
+Support of `auth-3.5`.
+
+
 ### 1.5 (2018-06-01)
 
 Support of `pytsite-7.24`.

@@ -135,7 +135,7 @@ def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, 
             })
             m_from = '{} <{}>'.format(author.full_name, _mail.mail_from()[1])
 
-            _mail.Message(parent_comment.author.email, m_subject, m_body, m_from).send()
+            _mail.Message(parent_comment.author.login, m_subject, m_body, m_from).send()
 
     return comment
 
