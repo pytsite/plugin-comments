@@ -17,7 +17,7 @@ class Form(_settings.Form):
             self.remove_widget('action_submit')
             self.add_widget(_widget.static.Text(
                 uid='error_message',
-                title=_lang.t('comments@no_comments_driver_installed'),
+                text=_lang.t('comments@no_comments_driver_installed'),
             ))
             return
 
