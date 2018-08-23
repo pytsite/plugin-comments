@@ -1,6 +1,6 @@
 {
   "name": "comments",
-  "version": "1.7",
+  "version": "1.7.1",
   "description": {
     "en": "Comments",
     "ru": "Комментирование",
@@ -8,14 +8,14 @@
   },
   "url": "https://github.com/pytsite/plugin-comments",
   "author": {
-    "name": "Alexander Shepetko",
+    "name": "Oleksandr Shepetko",
     "email": "a@shepetko.com",
     "url": "https://shepetko.com"
   },
   "requires": {
     "pytsite": ">=7.24",
     "plugins": [
-      "auth>=3.5",
+      "auth>=3.6",
       "form>=2.3",
       "http_api",
       "permissions",

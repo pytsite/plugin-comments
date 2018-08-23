@@ -1,6 +1,6 @@
 """PytSite Comments Plugin API Functions
 """
-__author__ = 'Alexander Shepetko'
+__author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
@@ -133,7 +133,7 @@ def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, 
                 'reply': comment,
                 'comment': get_comment(comment.parent_uid, driver_name)
             })
-            m_from = '{} <{}>'.format(author.full_name, _mail.mail_from()[1])
+            m_from = '{} <{}>'.format(author.first_last_name, _mail.mail_from()[1])
 
             _mail.Message(parent_comment.author.login, m_subject, m_body, m_from).send()
 

@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 1.7.1 (2018-08-23)
+
+User's `full_name` usage replaced with `first_last_name`.
+
+
 ### 1.7 (2018-08-21)
 
 Support of `widget-2.11`.

@@ -1,6 +1,6 @@
 """PytSite Comments Plugin Models
 """
-__author__ = 'Alexander Shepetko'
+__author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
@@ -81,7 +81,7 @@ class AbstractComment:
                 'author': {
                     'uid': author.uid,
                     'nickname': author.nickname,
-                    'full_name': author.full_name,
+                    'first_last_name': author.first_last_name,
                     'picture_url': author.picture.get_url(width=50, height=50),
                 },
             })
