@@ -11,14 +11,6 @@ from ._api import register_driver, get_driver, get_widget, get_comments_count, g
     get_comment, get_comment_body_max_length, get_comments, get_permissions, delete_thread, set_default_driver
 
 
-def plugin_load():
-    from pytsite import lang, tpl
-
-    # Resources
-    lang.register_package(__name__)
-    tpl.register_package(__name__)
-
-
 def plugin_load_wsgi():
     from plugins import permissions, settings, http_api
     from . import _http_api_controllers, _settings_form
@@ -27,7 +19,7 @@ def plugin_load_wsgi():
     permissions.define_group('comments', 'comments@comments')
 
     # Settings
-    settings.define('comments', _settings_form.Form, 'comments@comments', 'fa fa-comments', 'dev')
+    settings.define('comments', _settings_form.Form, 'comments@comments', 'fa fas fa-comments', 'dev')
 
     # HTTP API
     http_api.handle('GET', 'comments/settings', _http_api_controllers.GetSettings, 'comments@get_settings')
