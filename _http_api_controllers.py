@@ -15,8 +15,8 @@ class GetSettings(_routing.Controller):
 
     def exec(self) -> dict:
         return {
-            'body_min_length': _api.get_comment_body_min_length(),
-            'body_max_length': _api.get_comment_body_max_length(),
+            'min_body_length': _api.get_comment_min_body_length(),
+            'max_body_length': _api.get_comment_max_body_length(),
             'max_depth': _api.get_comment_max_depth(),
             'statuses': _api.get_comment_statuses(),
             'permissions': _api.get_permissions(_auth.get_current_user(), self.arg('driver')),
@@ -58,13 +58,9 @@ class GetComments(_routing.Controller):
     """
 
     def exec(self) -> dict:
-        thread_uid = self.arg('thread_uid')
-        if not thread_uid:
-            raise RuntimeError('Thread UID is not specified')
-
         limit = abs(int(self.arg('limit', 0)))
         skip = abs(int(self.arg('skip', 0)))
-        comments = list(_api.get_driver().get_comments(thread_uid, limit, skip))
+        comments = list(_api.get_driver().get_comments(self.arg('thread_uid'), limit, skip))
 
         return {
             'items': [comment.as_jsonable() for comment in comments],
