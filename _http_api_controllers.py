@@ -4,7 +4,8 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import lang as _lang, routing as _routing, events as _events
+from base64 import b32decode as _b32decode
+from pytsite import lang as _lang, routing as _routing, events as _events, util as _util
 from plugins import auth as _auth
 from . import _api, _error
 
@@ -28,10 +29,7 @@ class PostComment(_routing.Controller):
     """
 
     def exec(self) -> dict:
-
-        thread_uid = self.arg('thread_uid')
-        if not thread_uid:
-            raise self.server_error('Thread UID is not specified')
+        thread_uid = _util.url_unquote(_b32decode(self.arg('thread_uid')))
 
         body = self.arg('body', '').strip()
         if not body:
@@ -60,7 +58,8 @@ class GetComments(_routing.Controller):
     def exec(self) -> dict:
         limit = abs(int(self.arg('limit', 0)))
         skip = abs(int(self.arg('skip', 0)))
-        comments = list(_api.get_driver().get_comments(self.arg('thread_uid'), limit, skip))
+        thread_uid = _util.url_unquote(_b32decode(self.arg('thread_uid')))
+        comments = list(_api.get_driver().get_comments(thread_uid, limit, skip))
 
         return {
             'items': [comment.as_jsonable() for comment in comments],

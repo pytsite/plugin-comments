@@ -6,8 +6,9 @@ __license__ = 'MIT'
 
 from typing import Dict as _Dict, Iterable as _Iterable, Mapping as _Mapping
 from frozendict import frozendict as _frozendict
+from base64 import b32encode as _b32encode
 from pytsite import router as _router, reg as _reg, lang as _lang, cache as _cache, mail as _mail, tpl as _tpl, \
-    events as _events
+    events as _events, util as _util
 from plugins import widget as _widget, auth as _auth
 from . import _driver, _error, _model
 
@@ -101,10 +102,13 @@ def get_comment_max_body_length() -> int:
     return int(_reg.get('comments.max_comment_length', 2048))
 
 
-def get_widget(widget_uid: str = 'comments', thread_id: str = None, driver_name: str = None) -> _widget.Abstract:
+def get_widget(widget_uid: str = 'comments', thread_uid: str = None, driver_name: str = None) -> _widget.Abstract:
     """Get comments widget.
     """
-    return get_driver(driver_name).get_widget(widget_uid, thread_id or _router.current_path())
+    if not thread_uid:
+        thread_uid = _util.url_quote(_b32encode(_router.current_path().encode('utf-8')).decode('ascii'))
+
+    return get_driver(driver_name).get_widget(widget_uid, thread_uid)
 
 
 def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, status: str = 'published',

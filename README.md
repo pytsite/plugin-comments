@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.0.1 (2019-05-12)
+
+URLs quoting of threads UIDs fixed.
+
+
 ### 3.0 (2019-05-08)
 
 - `COMMENT_STATUS_*` constants introduced.
