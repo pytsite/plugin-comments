@@ -1,6 +1,6 @@
 {
   "name": "comments",
-  "version": "3.0.1",
+  "version": "3.1",
   "description": {
     "en": "Comments",
     "ru": "Комментирование",
@@ -13,7 +13,7 @@
     "url": "https://shepetko.com"
   },
   "requires": {
-    "pytsite": "8.x",
+    "pytsite": ">=9.0",
     "plugins": {
       "auth": "3.x",
       "form": "5.x",

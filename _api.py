@@ -4,17 +4,16 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from typing import Dict as _Dict, Iterable as _Iterable, Mapping as _Mapping
-from frozendict import frozendict as _frozendict
-from base64 import b32encode as _b32encode
-from pytsite import router as _router, reg as _reg, lang as _lang, cache as _cache, mail as _mail, tpl as _tpl, \
-    events as _events, util as _util
-from plugins import widget as _widget, auth as _auth
+from typing import Dict as Dict, Iterable, Mapping
+from frozendict import frozendict
+from base64 import b32encode
+from pytsite import router, reg, lang, cache, mail, tpl, events, util
+from plugins import widget, auth
 from . import _driver, _error, _model
 
 _default_driver = None  # type: _driver.Abstract
-_drivers = {}  # type: _Dict[str, _driver.Abstract]
-_comments_count = _cache.create_pool('comments.count')
+_drivers = {}  # type: Dict[str, _driver.Abstract]
+_comments_count = cache.create_pool('comments.count')
 
 COMMENT_STATUS_PUBLISHED = 'published'
 COMMENT_STATUS_WAITING = 'waiting'
@@ -57,7 +56,7 @@ def get_driver(name: str = None) -> _driver.Abstract:
         raise _error.NoDriversRegistered('There is no comment drivers registered')
 
     if not name:
-        return _drivers.get(_reg.get('comments.driver', ''), _default_driver)
+        return _drivers.get(reg.get('comments.driver', ''), _default_driver)
     elif name not in _drivers:
         raise _error.DriverNotRegistered("Driver '{}' is not registered".format(name))
 
@@ -72,56 +71,56 @@ def set_default_driver(name: str):
     _default_driver = get_driver(name)
 
 
-def get_drivers() -> _Mapping[str, _driver.Abstract]:
+def get_drivers() -> Mapping[str, _driver.Abstract]:
     """Get all registered drivers
     """
-    return _frozendict(_drivers)
+    return frozendict(_drivers)
 
 
-def get_comment_statuses() -> _Mapping:
+def get_comment_statuses() -> Mapping:
     """Get valid comment statuses.
     """
-    return {s: _lang.t('comments@status_{}'.format(s)) for s in _COMMENT_STATUSES}
+    return {s: lang.t('comments@status_{}'.format(s)) for s in _COMMENT_STATUSES}
 
 
 def get_comment_max_depth() -> int:
     """Get comment's max depth.
     """
-    return int(_reg.get('comments.max_comment_depth', 4))
+    return int(reg.get('comments.max_comment_depth', 4))
 
 
 def get_comment_min_body_length() -> int:
     """Get comment's body minimum length.
     """
-    return int(_reg.get('comments.min_comment_length', 2))
+    return int(reg.get('comments.min_comment_length', 2))
 
 
 def get_comment_max_body_length() -> int:
     """Get comment's body maximum length.
     """
-    return int(_reg.get('comments.max_comment_length', 2048))
+    return int(reg.get('comments.max_comment_length', 2048))
 
 
-def get_widget(widget_uid: str = 'comments', thread_uid: str = None, driver_name: str = None) -> _widget.Abstract:
+def get_widget(widget_uid: str = 'comments', thread_uid: str = None, driver_name: str = None) -> widget.Abstract:
     """Get comments widget.
     """
     if not thread_uid:
-        thread_uid = _util.url_quote(_b32encode(_router.current_path().encode('utf-8')).decode('ascii'))
+        thread_uid = util.url_quote(b32encode(router.current_path().encode('utf-8')).decode('ascii'))
 
     return get_driver(driver_name).get_widget(widget_uid, thread_uid)
 
 
-def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, status: str = 'published',
+def create_comment(thread_id: str, body: str, author: auth.model.AbstractUser, status: str = 'published',
                    parent_uid: str = None, driver_name: str = None) -> _model.AbstractComment:
     """Create a new comment
     """
     # Check min length
     if len(body) < get_comment_min_body_length():
-        raise _error.CommentTooShort(_lang.t('comments@error_body_too_short'))
+        raise _error.CommentTooShort(lang.t('comments@error_body_too_short'))
 
     # Check max length
     if len(body) > get_comment_max_body_length():
-        raise _error.CommentTooLong(_lang.t('comments@error_body_too_long'))
+        raise _error.CommentTooLong(lang.t('comments@error_body_too_long'))
 
     # Check status
     if status not in get_comment_statuses():
@@ -132,21 +131,21 @@ def create_comment(thread_id: str, body: str, author: _auth.model.AbstractUser, 
 
     # Create comment
     comment = driver.create_comment(thread_id, body, author, status, parent_uid)
-    _events.fire('comments@create_comment', comment=comment)
+    events.fire('comments@create_comment', comment=comment)
 
     # Send email notification about reply
-    if _reg.get('comments.email_notify', True) and comment.is_reply:
+    if reg.get('comments.email_notify', True) and comment.is_reply:
         parent_comment = get_comment(comment.parent_uid)
         if comment.author != parent_comment.author:
-            tpl_name = 'comments@mail/{}/reply'.format(_lang.get_current())
-            m_subject = _lang.t('comments@mail_subject_new_reply')
-            m_body = _tpl.render(tpl_name, {
+            tpl_name = 'comments@mail/{}/reply'.format(lang.get_current())
+            m_subject = lang.t('comments@mail_subject_new_reply')
+            m_body = tpl.render(tpl_name, {
                 'reply': comment,
                 'comment': get_comment(comment.parent_uid, driver_name)
             })
-            m_from = '{} <{}>'.format(author.first_last_name, _mail.mail_from()[1])
+            m_from = '{} <{}>'.format(author.first_last_name, mail.mail_from()[1])
 
-            _mail.Message(parent_comment.author.login, m_subject, m_body, m_from).send()
+            mail.Message(parent_comment.author.login, m_subject, m_body, m_from).send()
 
     return comment
 
@@ -158,7 +157,7 @@ def get_comment(uid: str, driver_name: str = None) -> _model.AbstractComment:
 
 
 def get_comments(thread_id: str, limit: int = 0, skip: int = 0, status: str = 'published', driver_name: str = None) \
-        -> _Iterable[_model.AbstractComment]:
+        -> Iterable[_model.AbstractComment]:
     """Get comments for a thread.
     """
     return get_driver(driver_name).get_comments(thread_id, limit, skip, status)
@@ -194,10 +193,10 @@ def get_all_comments_count(thread_id: str):
     return count
 
 
-def get_permissions(user: _auth.model.AbstractUser = None, driver_name: str = None) -> dict:
+def get_permissions(user: auth.model.AbstractUser = None, driver_name: str = None) -> dict:
     """Get permissions definition for user
     """
     if not user:
-        user = _auth.get_current_user()
+        user = auth.get_current_user()
 
     return get_driver(driver_name).get_permissions(user)

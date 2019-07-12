@@ -4,16 +4,16 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from typing import Iterable as _Iterable
-from abc import ABC as _ABC, abstractmethod as _abstractmethod
-from datetime import datetime as _datetime
-from pytsite import util as _util, lang as _lang, router as _router
-from plugins import auth as _auth, http_api as _http_api
+from typing import Iterable
+from abc import ABC, abstractmethod
+from datetime import datetime
+from pytsite import util, lang, router
+from plugins import auth, http_api
 
 
-class AbstractComment(_ABC):
+class AbstractComment(ABC):
     @property
-    def author(self) -> _auth.model.AbstractUser:
+    def author(self) -> auth.model.AbstractUser:
         raise NotImplementedError("Not implemented yet")
 
     @property
@@ -23,12 +23,12 @@ class AbstractComment(_ABC):
     @property
     def children(self):
         """
-        :rtype: _Iterable[AbstractComment]
+        :rtype: Iterable[AbstractComment]
         """
         raise NotImplementedError("Not implemented yet")
 
     @property
-    def created(self) -> _datetime:
+    def created(self) -> datetime:
         raise NotImplementedError("Not implemented yet")
 
     @property
@@ -48,7 +48,7 @@ class AbstractComment(_ABC):
         raise NotImplementedError("Not implemented yet")
 
     @property
-    def publish_time(self) -> _datetime:
+    def publish_time(self) -> datetime:
         raise NotImplementedError("Not implemented yet")
 
     @property
@@ -67,7 +67,7 @@ class AbstractComment(_ABC):
     def status(self) -> str:
         raise NotImplementedError("Not implemented yet")
 
-    @_abstractmethod
+    @abstractmethod
     def delete(self):
         raise NotImplementedError()
 
@@ -83,19 +83,19 @@ class AbstractComment(_ABC):
             'parent_uid': self.parent_uid,
             'permissions': self.permissions,
             'publish_time': {
-                'w3c': _util.w3c_datetime_str(self.publish_time),
-                'pretty_date': _lang.pretty_date(self.publish_time),
-                'pretty_date_time': _lang.pretty_date_time(self.publish_time),
-                'ago': _lang.time_ago(self.publish_time),
+                'w3c': util.w3c_datetime_str(self.publish_time),
+                'pretty_date': lang.pretty_date(self.publish_time),
+                'pretty_date_time': lang.pretty_date_time(self.publish_time),
+                'ago': lang.time_ago(self.publish_time),
             },
             'children': [c.as_jsonable() for c in self.children],
             'status': self.status,
             'thread_uid': self.thread_uid,
             'uid': self.uid,
             'urls': {
-                'delete': _http_api.url('comments@delete_comment', {'uid': self.uid}),
-                'report': _http_api.url('comments@report_comment', {'uid': self.uid}),
-                'view': _router.url(self.thread_uid, fragment='pytsite-comment-{}'.format(self.uid)),
+                'delete': http_api.url('comments@delete_comment', {'uid': self.uid}),
+                'report': http_api.url('comments@report_comment', {'uid': self.uid}),
+                'view': router.url(self.thread_uid, fragment='pytsite-comment-{}'.format(self.uid)),
             },
         }
 

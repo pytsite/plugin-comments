@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.1 (2019-07-12)
+
+Support of `pytsite-9.0`.
+
+
 ### 3.0.1 (2019-05-12)
 
 URLs quoting of threads UIDs fixed.
